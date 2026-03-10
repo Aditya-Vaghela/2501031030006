@@ -1,0 +1,554 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>E-Commerce Website</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+
+body{
+margin:0;
+font-family:Arial;
+background:#f3f3f3;
+}
+
+/* NAVBAR */
+
+.navbar{
+background:#131921;
+color:white;
+padding:12px;
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.navbar button{
+margin-left:10px;
+padding:8px 12px;
+cursor:pointer;
+border:none;
+background:#febd69;
+border-radius:4px;
+}
+
+/* PAGES */
+
+.page{
+display:none;
+padding:20px;
+}
+
+.active{
+display:block;
+}
+
+/* HOME */
+
+.banner{
+height:300px;
+background:url("https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da") center/cover;
+display:flex;
+align-items:center;
+justify-content:center;
+color:white;
+font-size:40px;
+font-weight:bold;
+}
+
+/* PRODUCTS */
+
+.products{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.product{
+background:white;
+padding:10px;
+border-radius:10px;
+text-align:center;
+cursor:pointer;
+}
+
+.product img{
+width:100%;
+height:150px;
+object-fit:cover;
+}
+
+/* PRODUCT DETAILS */
+
+.details{
+background:white;
+padding:20px;
+border-radius:10px;
+max-width:500px;
+margin:auto;
+}
+
+.details img{
+width:100%;
+}
+
+/* CART */
+
+.cart-item{
+display:flex;
+align-items:center;
+gap:10px;
+background:white;
+padding:10px;
+margin-bottom:10px;
+}
+
+.cart-item img{
+width:60px;
+}
+
+/* LOGIN */
+
+#loginModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+}
+
+.login-box{
+background:white;
+padding:25px;
+border-radius:10px;
+width:300px;
+text-align:center;
+}
+
+/* CHECKOUT */
+
+#checkoutModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+}
+
+.checkout-box{
+background:white;
+padding:30px;
+border-radius:10px;
+width:320px;
+text-align:center;
+}
+
+.checkout-box input{
+width:90%;
+padding:8px;
+margin:8px 0;
+}
+
+/* PAYMENT */
+
+#paymentModal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.6);
+justify-content:center;
+align-items:center;
+}
+
+.payment-box{
+background:white;
+padding:30px;
+border-radius:10px;
+width:320px;
+text-align:center;
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+
+<div class="navbar">
+
+<div><b>E-Commerce Website</b></div>
+
+<div>
+<button onclick="showPage('home')">Home</button>
+<button onclick="showPage('products')">Products</button>
+<button onclick="showPage('cart')">Cart</button>
+<button onclick="openLogin()">Login</button>
+</div>
+
+</div>
+
+<!-- HOME -->
+
+<div id="home" class="page active">
+
+<div class="banner">
+Welcome To Our Store
+</div>
+
+</div>
+
+<!-- PRODUCTS -->
+
+<div id="products" class="page">
+
+<h2>Products</h2>
+
+<div class="products" id="productList"></div>
+
+</div>
+
+<!-- PRODUCT DETAILS -->
+
+<div id="details" class="page">
+
+<div class="details" id="productDetails"></div>
+
+</div>
+
+<!-- CART -->
+
+<div id="cart" class="page">
+
+<h2>Your Cart</h2>
+
+<div id="cartItems"></div>
+
+<h3>Total: ₹<span id="total">0</span></h3>
+
+<button onclick="openCheckout()">Checkout</button>
+
+</div>
+
+<!-- LOGIN -->
+
+<div id="loginModal">
+
+<div class="login-box">
+
+<h2>Login</h2>
+
+<input id="email" placeholder="Email"><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+
+<button onclick="login()">Login</button>
+
+<br><br>
+
+<button onclick="closeLogin()">Close</button>
+
+</div>
+
+</div>
+
+<!-- CHECKOUT -->
+
+<div id="checkoutModal">
+
+<div class="checkout-box">
+
+<h2>Checkout</h2>
+
+<input id="address" placeholder="Enter Address">
+
+<input id="phone" placeholder="Phone Number">
+
+<br>
+
+<button onclick="placeOrder()">Continue to Payment</button>
+
+</div>
+
+</div>
+
+<!-- PAYMENT -->
+
+<div id="paymentModal">
+
+<div class="payment-box">
+
+<h2>Select Payment Method</h2>
+
+<label>
+<input type="radio" name="payment" value="UPI"> UPI
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="Card"> Credit / Debit Card
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="COD"> Cash on Delivery
+</label>
+
+<br><br>
+
+<button onclick="confirmPayment()">Pay Now</button>
+
+</div>
+
+</div>
+
+<script>
+
+/* PAGE NAVIGATION */
+
+function showPage(id){
+
+document.querySelectorAll(".page").forEach(p=>{
+p.classList.remove("active")
+})
+
+document.getElementById(id).classList.add("active")
+
+}
+
+/* LOGIN */
+
+let loggedIn=false
+
+function openLogin(){
+document.getElementById("loginModal").style.display="flex"
+}
+
+function closeLogin(){
+document.getElementById("loginModal").style.display="none"
+}
+
+function login(){
+
+let email=document.getElementById("email").value
+let pass=document.getElementById("password").value
+
+if(email==""||pass==""){
+alert("Enter email and password")
+return
+}
+
+loggedIn=true
+
+alert("Login successful")
+
+closeLogin()
+
+showPage("products")
+
+}
+
+/* PRODUCTS */
+
+let products=[
+
+{name:"Laptop",price:65000,desc:"High performance laptop",img:"https://images.unsplash.com/photo-1517336714731-489689fd1ca8"},
+
+{name:"Smartphone",price:30000,desc:"Latest Android smartphone",img:"https://images.unsplash.com/photo-1511707171634-5f897ff02aa9"},
+
+{name:"Smart Watch",price:12000,desc:"Fitness smartwatch",img:"https://images.unsplash.com/photo-1523275335684-37898b6baf30"},
+
+{name:"Tablet",price:20000,desc:"Portable tablet device",img:"https://images.unsplash.com/photo-1542751110-97427bbecf20"},
+
+{name:"Keyboard",price:3500,desc:"Gaming keyboard",img:"https://images.unsplash.com/photo-1518770660439-4636190af475"},
+
+{name:"Gaming Mouse",price:2500,desc:"RGB gaming mouse",img:"https://images.unsplash.com/photo-1587202372775-e229f172b9d7"}
+
+]
+
+let cart=[]
+
+function loadProducts(){
+
+let html=""
+
+products.forEach((p,i)=>{
+
+html+=`
+
+<div class="product" onclick="showDetails(${i})">
+
+<img src="${p.img}">
+
+<h3>${p.name}</h3>
+
+<p>₹${p.price}</p>
+
+</div>
+
+`
+
+})
+
+document.getElementById("productList").innerHTML=html
+
+}
+
+loadProducts()
+
+/* PRODUCT DETAILS */
+
+function showDetails(i){
+
+let p=products[i]
+
+showPage("details")
+
+document.getElementById("productDetails").innerHTML=`
+
+<img src="${p.img}">
+
+<h2>${p.name}</h2>
+
+<p>${p.desc}</p>
+
+<h3>Price: ₹${p.price}</h3>
+
+<button onclick="addCart(${i})">Add to Cart</button>
+
+<button onclick="buyNow(${i})">Buy</button>
+
+`
+
+}
+
+/* CART */
+
+function addCart(i){
+
+if(!loggedIn){
+alert("Please login first")
+openLogin()
+return
+}
+
+cart.push(products[i])
+
+updateCart()
+
+alert("Product added to cart")
+
+}
+
+function buyNow(i){
+
+if(!loggedIn){
+alert("Please login first")
+openLogin()
+return
+}
+
+cart.push(products[i])
+
+updateCart()
+
+showPage("cart")
+
+}
+
+function updateCart(){
+
+let html=""
+let total=0
+
+cart.forEach(p=>{
+
+html+=`
+
+<div class="cart-item">
+
+<img src="${p.img}">
+
+${p.name} - ₹${p.price}
+
+</div>
+
+`
+
+total+=p.price
+
+})
+
+document.getElementById("cartItems").innerHTML=html
+document.getElementById("total").innerText=total
+
+}
+
+/* CHECKOUT */
+
+function openCheckout(){
+
+if(cart.length==0){
+alert("Cart empty")
+return
+}
+
+document.getElementById("checkoutModal").style.display="flex"
+
+}
+
+function placeOrder(){
+
+let addr=document.getElementById("address").value
+let phone=document.getElementById("phone").value
+
+if(addr==""||phone==""){
+alert("Enter address and phone number")
+return
+}
+
+document.getElementById("checkoutModal").style.display="none"
+document.getElementById("paymentModal").style.display="flex"
+
+}
+
+/* PAYMENT */
+
+function confirmPayment(){
+
+let payment=document.querySelector('input[name="payment"]:checked')
+
+if(!payment){
+alert("Please select payment method")
+return
+}
+
+alert("Payment Successful! Order Placed Successfully!")
+
+cart=[]
+updateCart()
+
+document.getElementById("paymentModal").style.display="none"
+
+showPage("home")
+
+}
+
+</script>
+
+</body>
+</html>
+```

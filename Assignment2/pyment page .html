@@ -1,0 +1,100 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Payment Page</title>
+
+<style>
+
+/* PAGE STYLE */
+body{
+margin:0;
+font-family:Arial;
+background:#f3f3f3;
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+}
+
+/* PAYMENT BOX */
+
+.payment-box{
+background:white;
+padding:30px;
+border-radius:10px;
+width:320px;
+text-align:center;
+box-shadow:0 0 10px rgba(0,0,0,0.2);
+}
+
+.payment-box h2{
+margin-bottom:20px;
+}
+
+.payment-box label{
+font-size:16px;
+}
+
+.payment-box button{
+margin-top:15px;
+padding:10px 15px;
+background:#131921;
+color:white;
+border:none;
+cursor:pointer;
+border-radius:5px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="payment-box">
+
+<h2>Select Payment Method</h2>
+
+<label>
+<input type="radio" name="payment" value="UPI"> UPI
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="Card"> Credit / Debit Card
+</label>
+
+<br><br>
+
+<label>
+<input type="radio" name="payment" value="COD"> Cash on Delivery
+</label>
+
+<br><br>
+
+<button onclick="confirmPayment()">Pay Now</button>
+
+</div>
+
+<script>
+
+function confirmPayment(){
+
+let payment=document.querySelector('input[name="payment"]:checked')
+
+if(!payment){
+alert("Please select payment method")
+return
+}
+
+alert("Payment Successful! Order Placed Successfully!")
+
+}
+
+</script>
+
+</body>
+</html>
+```
